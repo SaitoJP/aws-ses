@@ -168,7 +168,7 @@ module AWS #:nodoc:
                         "Version" => API_VERSION,
                         "Timestamp" => timestamp.iso8601 } )
 
-        query = params.sort.collect do |param|
+        @query = params.sort.collect do |param|
           CGI::escape(param[0]) + "=" + CGI::escape(param[1])
         end.join("&")
 
@@ -178,7 +178,7 @@ module AWS #:nodoc:
         req['X-Amz-Date'] = amzdate
         req['User-Agent'] = @user_agent
 
-        response = connection.post(@path, query, req)
+        response = connection.post(@path, @query, req)
 
         response_class = AWS::SES.const_get( "#{action}Response" )
         result = response_class.new(action, response)
@@ -226,11 +226,11 @@ module AWS #:nodoc:
       end
 
       def canonical_request(for_action)
-        "GET" + "\n" + "/" + "\n" + canonical_querystring(for_action) + "\n" + canonical_headers + "\n" + sig_v4_auth_signed_headers + "\n" + payload_hash
+        "POST" + "\n" + "/" + "\n" + canonical_querystring(for_action) + "\n" + canonical_headers + "\n" + sig_v4_auth_signed_headers + "\n" + payload_hash
       end
 
       def canonical_querystring(action)
-        "Action=#{action}&Version=2013-10-15"
+        ''
       end
 
       def canonical_headers
@@ -238,7 +238,7 @@ module AWS #:nodoc:
       end
 
       def payload_hash
-        Digest::SHA256.hexdigest(''.encode('utf-8'))
+        Digest::SHA256.hexdigest(@query.encode('utf-8'))
       end
 
       def sig_v4_auth_signature(for_action)
