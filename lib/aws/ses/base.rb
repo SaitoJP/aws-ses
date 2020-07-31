@@ -37,7 +37,7 @@ module AWS #:nodoc:
 
     REGION = 'us-east-1'
 
-    SERVICE = 'ec2'
+    SERVICE = 'email'
 
     DEFAULT_HOST = 'email.us-east-1.amazonaws.com'
 
