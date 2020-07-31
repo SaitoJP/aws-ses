@@ -213,7 +213,7 @@ module AWS #:nodoc:
       end
 
       def string_to_sign(for_action)
-        "AWS4-HMAC-SHA256\n" +  amzdate + "\n" +  credential_scope + "\n" + Digest::SHA256.hexdigest(canonical_request(for_action).encode('utf-8').b)
+        "AWS4-HMAC-SHA256\n" +  amzdate + "\n" +  credential_scope + "\n" + Digest::SHA256.hexdigest(canonical_request(for_action).encode('utf-8').bytes.to_a.pack("C*"))
       end
 
 
