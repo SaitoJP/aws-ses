@@ -174,8 +174,8 @@ module AWS #:nodoc:
 
         req = {}
 
-        req['X-Amzn-Authorization'] = get_aws_auth_param(timestamp.httpdate, @secret_access_key, action, signature_version.to_s)
-        req['Date'] = timestamp.httpdate
+        req['Authorization'] = get_aws_auth_param(timestamp.httpdate, @secret_access_key, action, signature_version.to_s)
+        req['X-Amz-Date'] = amzdate
         req['User-Agent'] = @user_agent
 
         response = connection.post(@path, query, req)
