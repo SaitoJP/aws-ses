@@ -191,9 +191,9 @@ module AWS #:nodoc:
       end
 
       # Set the Authorization header using AWS signed header authentication
-      def get_aws_auth_param(timestamp, secret_access_key, action = '', signature_version = 2)
+      def get_aws_auth_param(timestamp, secret_access_key, action = '', signature_version = '2')
         encoded_canonical = SES.encode(secret_access_key, timestamp, false)
-        return SES.authorization_header(@access_key_id, 'HmacSHA256', encoded_canonical) unless signature_version == 4
+        return SES.authorization_header(@access_key_id, 'HmacSHA256', encoded_canonical) unless signature_version == '4'
 
         SES.authorization_header_v4(sig_v4_auth_credential, sig_v4_auth_signed_headers, sig_v4_auth_signature(action))
       end
